@@ -1,9 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
-import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, Button, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
-export default function ActionButton() {
-  const navigation= useNavigation()
+type mode = {
+  type?: string;
+};
+
+
+export default function ActionButton(props: mode) {
+  const navigation = useNavigation()
 
   const goToLogin = () => {
     navigation.navigate("LoginScreen");
@@ -15,51 +21,117 @@ export default function ActionButton() {
     setModalVisible(!modalVisible);
   }
 
+  // const openScanner = () => {}
+
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [openScanner, setOpenScanner] = useState(false);
+
+  const [hasPermission, setHasPermission] = React.useState(false);
+  const [scanData, setScanData] = React.useState();
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status == 'granted')
+    })();
+  }, []);
+
+  if (!hasPermission) {
+    return (
+      <View><Text>Please grant camera permissions to app.</Text></View>
+    )
+  }
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanData(data)
+    console.log('Type: ' + type + '\nData: ' + data)
+    setOpenScanner(false)
+    {navigation.navigate("ProductDetailsScreen", {data})
+    }
+  }
+
   return (
     <View style={styles.centeredView}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        // presentationStyle='pageSheet'
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredViewModal}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>For a better experience, we recommend to </Text>
+      {props.type == 'openModal' &&
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          // presentationStyle='pageSheet'
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredViewModal}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>For a better experience, we recommend to </Text>
 
-            <TouchableOpacity 
-            style={styles.containerLogin}
-            onPress={goToLogin}
-            >
-               <Text style={styles.buttonLogin}>Login</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.containerLogin}
+                onPress={goToLogin}
+              >
+                <Text style={styles.buttonLogin}>Login</Text>
+              </TouchableOpacity>
 
-            <Text style={styles.continueAs}>or continue as</Text>
+              <Text style={styles.continueAs}>or continue as</Text>
 
+              <TouchableOpacity
+                style={styles.buttonClose}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyleClose}>X</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.containerGuestUser}
+                onPress={goToGuestHomeScreen}
+              >
+                <Text style={styles.buttonGuestUser}>Guest user</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      }
+      {props.type == 'openScanner' &&
+        <Modal
+          animationType="slide"
+          // transparent={true}
+          visible={openScanner}
+          presentationStyle='fullScreen'
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={{paddingTop: 64}}>
+            <View style={{height: '10%', display: 'flex', justifyContent: 'center'}}>
+            <Text style={{ maxWidth: '70%', marginLeft: 20, fontSize: 16, fontWeight: '500'}}>The barcode is usually located on the back of the product</Text>
             <TouchableOpacity
               style={styles.buttonClose}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => setOpenScanner(!openScanner)}
             >
               <Text style={styles.textStyleClose}>X</Text>
             </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity 
-            style={styles.containerGuestUser}
-            onPress={goToGuestHomeScreen}
-            >
-               <Text style={styles.buttonGuestUser}>Guest user</Text>
-            </TouchableOpacity>
+            <View style={{ height: '80%' }}>
+
+              <BarCodeScanner
+                style={StyleSheet.absoluteFillObject}
+                onBarCodeScanned={scanData ? undefined : handleBarCodeScanned} />
+            </View>
+
+            <Text>{scanData}</Text>
+            {scanData && <Button title='scan again?' onPress={() => setScanData(undefined)} />}
+
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      }
       <TouchableOpacity
         style={styles.openModal}
-        onPress={() => setModalVisible(true)}
+        onPress={() => props.type == 'openModal' ? setModalVisible(true) : setOpenScanner(true)}
       >
         <Text style={styles.textStyle}>Scan a product</Text>
       </TouchableOpacity>
@@ -87,14 +159,8 @@ const styles = StyleSheet.create({
     borderRadius: 48,
   },
   containerGuestUser: {
-    // borderColor: '#2F92A4',
-    // borderWidth: 1,
-    // minWidth: 226,
-    // marginBottom: 20,
     paddingHorizontal: 24,
     justifyContent: 'center',
-    // height: 56,
-    // borderRadius: 48,
   },
   buttonLogin: {
     fontSize: 21,
@@ -126,13 +192,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: -1,
-    //   height: -200
-    // },
-    // shadowOpacity: 0.5,
-    // shadowRadius: 4,
     elevation: 5,
     width: '100%',
     height: 300
@@ -150,7 +209,7 @@ const styles = StyleSheet.create({
     height: 24,
     position: 'absolute',
     right: 8,
-    top:8,
+    top: 8,
   },
   textStyle: {
     color: "white",

@@ -12,6 +12,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import FirstScreen from './src/screens/FirstScreen';
 import GuestHomeScreen from './src/screens/GuestMode/GuestHomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import ProductDetailsScreen from './src/screens/ProductDetailsScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
@@ -24,6 +25,7 @@ export default function App() {
         <Stack.Screen options={{headerShown: false}} name="GuestHomeScreen" component={GuestHomeScreen} />
         <Stack.Screen options={{headerShown: false}} name="LoginScreen" component={LoginScreen} />
         <Stack.Screen options={{headerShown: false}} name="RegisterScreen" component={RegisterScreen} />
+        <Stack.Screen options={{headerShown: false}} name="ProductDetailsScreen" component={ProductDetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

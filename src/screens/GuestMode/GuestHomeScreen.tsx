@@ -1,39 +1,50 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native'
-import Ionic from 'react-native-vector-icons/Ionicons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DashboardScreen from './DashboardScreen';
 import LearnScreen from './LearnScreen';
 import {LinearGradient} from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 
 const GuestHomeScreen = () => {
   const Tab = createBottomTabNavigator();
 
   return (
-    // <NavigationContainer>
-    //   <Tab.Navigator
-    //   screenOptions={({route}) => ({
-    //     tabBarIcon: ({focused, size}) => {
-    //       let iconName;
+    <View style={{ backgroundColor: 'white', flex: 1 }}>
+      <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color}) => {
+          let iconName;
 
-    //       if(route.name === "Dashboard") {
-    //         iconName = focused ? "view-dashboard" : "view-dashboard-outline";
-    //       } else if (route.name === "Learn") {
-    //         iconName = focused ? "book-open" : "book";
-    //       }
-    //       return <Ionic name={iconName} size={size} />
-    //     }, 
-    //   })}>
-    //     <Tab.Screen name="Dashboard" component={DashboardScreen}/>
-    //     <Tab.Screen name="Learn" component={LearnScreen}/>
-    //   </Tab.Navigator>
-    // </NavigationContainer>
-    <View style={styles.container}>
-    <LinearGradient colors={['#B4D6D3', '#FFFFFF', '#B4D6D3']}  style={styles.linearGradient}>
-      <Text>Hello from Learn Screen</Text>
-    </LinearGradient>
-     </View>
+          if(route.name === "Dashboard") {
+            iconName = focused ? "view-dashboard" : "view-dashboard-outline";
+          } else if (route.name === "Learn") {
+            iconName = focused ? "book-open-blank-variant" : "book";
+          }
+          return <MaterialCommunityIcons name={iconName} size={24} color={color} />
+        }, 
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'black',
+        tabBarStyle: {
+          height: 80,
+          backgroundColor: '#B4D6D3',
+          margin: 12,
+          paddingTop: 16,
+          borderRadius: 48,
+        },
+        tabBarLabel: ({  color }) => (
+          <Text style={{ fontSize: 12, color, marginTop: 4 }}>
+            {route.name}
+          </Text>
+        ),
+      })}
+      >
+        <Tab.Screen options={{headerShown: false}} name="Dashboard" component={DashboardScreen}/>
+        <Tab.Screen options={{headerShown: false}} name="Learn" component={LearnScreen}/>
+      </Tab.Navigator>
+    </View>
   )
 }
 
@@ -46,15 +57,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    backgroundColor: '#B4D6D3',
+    backgroundColor: 'red',
   },
-  // linearGradient: {
-  //   flex: 1,
-  //   width: '100%', 
-  //   paddingTop: 50,
-  //   borderRadius: 5,
-  //   alignItems: 'center',
-  //   paddingHorizontal: 32,
-  //   justifyContent: 'flex-start',
-  // },
 });

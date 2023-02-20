@@ -5,7 +5,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 const LearnScreen = () => {
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#B4D6D3', '#FFFFFF', '#B4D6D3']}  style={styles.linearGradient}>
+      <LinearGradient colors={['#B4D6D3', '#FFFFFF']}  style={styles.linearGradient}>
         <Text>Hello from Learn Screen</Text>
       </LinearGradient>
     </View>
@@ -29,6 +29,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     paddingHorizontal: 32,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
 });

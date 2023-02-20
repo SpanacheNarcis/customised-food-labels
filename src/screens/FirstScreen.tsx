@@ -21,7 +21,7 @@ const FirstScreen = () => {
       <Text style={styles.description}>
         Start by choosing healthier products
       </Text>
-      <ScanButton />
+      <ScanButton type='openModal'/>
       </LinearGradient>
     <StatusBar style="auto" />
     </View>
