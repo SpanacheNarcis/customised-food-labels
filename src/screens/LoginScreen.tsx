@@ -1,8 +1,6 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native'
-import { StatusBar } from 'expo-status-bar';
 import {LinearGradient} from 'expo-linear-gradient';
-import ScanButton from '../components/ScanButton/ScanButton';
 import { useNavigation } from '@react-navigation/native'
 
 const LoginScreen = () => {

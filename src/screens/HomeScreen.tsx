@@ -1,14 +1,11 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native'
+import { StyleSheet, Text, View} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DashboardScreen from './DashboardScreen';
 import LearnScreen from './LearnScreen';
-import {LinearGradient} from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
 
-const GuestHomeScreen = () => {
+const HomeScreen = () => {
   const Tab = createBottomTabNavigator();
 
   return (
@@ -23,7 +20,7 @@ const GuestHomeScreen = () => {
           } else if (route.name === "Learn") {
             iconName = focused ? "book-open-blank-variant" : "book";
           }
-          return <MaterialCommunityIcons name={iconName} size={24} color={color} />
+          return <MaterialCommunityIcons name={iconName ? iconName : ""} size={24} color={color} />
         }, 
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'black',
@@ -48,15 +45,4 @@ const GuestHomeScreen = () => {
   )
 }
 
-export default GuestHomeScreen
-
-const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-    width: '100%',
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    backgroundColor: 'red',
-  },
-});
+export default HomeScreen

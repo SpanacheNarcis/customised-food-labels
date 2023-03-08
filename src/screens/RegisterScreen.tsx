@@ -1,11 +1,6 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native'
-import { StatusBar } from 'expo-status-bar';
-// import Vouched from '../components/Vouched/Vouched';
+import { StyleSheet, View} from 'react-native'
 import {LinearGradient} from 'expo-linear-gradient';
-import ScanButton from '../components/ScanButton/ScanButton';
-// import LatestHeroes from '../components/Latest-Heroes/LatestHeroes';
-// import Header from '../components/Header/Header'
 import { useNavigation } from '@react-navigation/native'
 
 const RegisterScreen = () => {

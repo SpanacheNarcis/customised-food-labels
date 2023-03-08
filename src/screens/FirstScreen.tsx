@@ -1,27 +1,47 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native'
 import { StatusBar } from 'expo-status-bar';
-// import Vouched from '../components/Vouched/Vouched';
 import {LinearGradient} from 'expo-linear-gradient';
-import ScanButton from '../components/ScanButton/ScanButton';
-// import LatestHeroes from '../components/Latest-Heroes/LatestHeroes';
-// import Header from '../components/Header/Header'
-import { useNavigation } from '@react-navigation/native'
+import StartButton from '../components/StartButton';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 const FirstScreen = () => {
+  const [fontsLoaded] = useFonts({
+    'JosefinSlab-Regular': require('../../assets/fonts/JosefinSlab-Regular.ttf'),
+    'JosefinSlab-Medium': require('../../assets/fonts/JosefinSlab-Medium.ttf'),
+    'JosefinSlab-SemiBold': require('../../assets/fonts/JosefinSlab-SemiBold.ttf'),
+    'JosefinSlab-Bold': require('../../assets/fonts/JosefinSlab-Bold.ttf'),
+  });
+
+  useEffect(() => {
+    const hideSplashScreen = async () => {
+      if (fontsLoaded) {
+        await SplashScreen.hideAsync();
+      }
+    };
+
+    hideSplashScreen();
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#B4D6D3', '#FFFFFF', '#B4D6D3']}  style={styles.linearGradient}>
       <Image source={require('../../assets/44073.png')} style={styles.image}/>
 
       <Text style={styles.header}>
-        GO for a Healthy Lifestyle 
+        Welcome to Healthy Lifestyle
       </Text>
 
       <Text style={styles.description}>
-        Start by choosing healthier products
+        This is the right place for you to learn more about the products that you are buying day-by-day.
       </Text>
-      <ScanButton type='openModal'/>
+      
+      <StartButton/>
       </LinearGradient>
     <StatusBar style="auto" />
     </View>
@@ -54,12 +74,17 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: "600",
+    fontFamily: 'JosefinSlab-Bold'
   },
   description: {
-    fontSize: 16,
+    fontSize: 20,
     width: '100%',
+    fontWeight: "300",
     textAlign: 'center',
-    marginTop: 64
+    marginTop: 48,
+    maxWidth: 300,
+    fontFamily: 'JosefinSlab-Medium'
   }
 });

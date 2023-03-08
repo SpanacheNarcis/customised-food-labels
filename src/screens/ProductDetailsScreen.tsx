@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
-import ScanButton from '../components/ScanButton/ScanButton';
+import ScanButton from '../components/ScanButton';
 import { useNavigation } from '@react-navigation/native'
 import { useRoute } from '@react-navigation/native';
 
