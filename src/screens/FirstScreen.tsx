@@ -7,26 +7,28 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 const FirstScreen = () => {
-  const [fontsLoaded] = useFonts({
-    'JosefinSlab-Regular': require('../../assets/fonts/JosefinSlab-Regular.ttf'),
-    'JosefinSlab-Medium': require('../../assets/fonts/JosefinSlab-Medium.ttf'),
-    'JosefinSlab-SemiBold': require('../../assets/fonts/JosefinSlab-SemiBold.ttf'),
-    'JosefinSlab-Bold': require('../../assets/fonts/JosefinSlab-Bold.ttf'),
-  });
+  // const [fontsLoaded] = useFonts({
+  //   'JosefinSlab-Regular': require('../../assets/fonts/JosefinSlab-Regular.ttf'),
+  //   'JosefinSlab-Medium': require('../../assets/fonts/JosefinSlab-Medium.ttf'),
+  //   'JosefinSlab-SemiBold': require('../../assets/fonts/JosefinSlab-SemiBold.ttf'),
+  //   'JosefinSlab-Bold': require('../../assets/fonts/JosefinSlab-Bold.ttf'),
+  // });
 
-  useEffect(() => {
-    const hideSplashScreen = async () => {
-      if (fontsLoaded) {
-        await SplashScreen.hideAsync();
-      }
-    };
+  // useEffect(() => {
+  //   const hideSplashScreen = async () => {
+  //     if (fontsLoaded) {
+  //       setTimeout(async () => {
+  //         await SplashScreen.hideAsync();
+  //       }, 2000); // wait for 2 seconds before hiding splash screen
+  //     }
+  //   };
+  
+  //   hideSplashScreen();
+  // }, [fontsLoaded]);
 
-    hideSplashScreen();
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
+  // if (!fontsLoaded) {
+  //   return null;
+  // }
 
   return (
     <View style={styles.container}>
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     textAlign: 'center',
     fontWeight: "600",
-    fontFamily: 'JosefinSlab-Bold'
+    // fontFamily: 'JosefinSlab-Bold'
   },
   description: {
     fontSize: 20,
@@ -85,6 +87,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 48,
     maxWidth: 300,
-    fontFamily: 'JosefinSlab-Medium'
+    // fontFamily: 'JosefinSlab-Medium'
   }
 });

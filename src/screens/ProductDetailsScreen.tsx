@@ -1,86 +1,98 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput } from 'react-native'
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, TextInput } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import ScanButton from '../components/ScanButton';
-import { useNavigation } from '@react-navigation/native'
-import { useRoute } from '@react-navigation/native';
+import NavigationPDP from '../components/NavigationPDP';
+
+const API_URL = 'https://world.openfoodfacts.org/api/v0/product/';
 
 const ProductDetailsScreen = ({ route }) => {
   const { data } = route.params;
   const [product, setProduct] = useState(null);
-  const [inputValue, setInputValue] = React.useState("");
-
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
-  
-      const json = await response.json();
-      setProduct(json);
+      try {
+        const response = await fetch(`${API_URL}${data}.json`);
+        const json = await response.json();
+        setProduct(json);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [data]);
+
+  const renderProductInfo = () => {
+    if (!product || !product.product || product.status_verbose !== 'product found') {
+      return (
+        <View>
+          <Text>Product not found</Text>
+        </View>
+      );
     }
 
-    fetchData();
-  }, [])
+    return (
+      <View>
+        <Text>
+          Barcode: <Text style={styles.bold}>{product.code}</Text>
+        </Text>
+        <View style={styles.imageContainer}>
+          {product.product.image_url ? (
+            <Image
+              source={{
+                uri: product.product.image_url,
+              }}
+              style={styles.image}
+            />
+          ) : null}
+          <View style={styles.productDetails}>
+            <Text style={styles.productName}>{product.product.product_name}</Text>
+            <Text style={styles.nutriscore}>
+              Nutri-score {product.product.nutriscore_grade.toUpperCase()}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.quantityBrand}>
+            {product.product.quantity ? (
+              <Text style={styles.quantity}>Quantity: {product.product.quantity}</Text>
+            ) : null}
+            {product.product?.brand ? (
+              <Text style={styles.brand}>Brand: {product.product.brands}</Text>
+            ) : null}
+        </View>
+        <TextInput
+          value={inputValue}
+          onChangeText={setInputValue}
+          placeholder="Search for an ingredient"
+          style={styles.input}
+        />
+        <NavigationPDP product={product.product}/>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#B4D6D3', '#FFFFFF']} style={styles.linearGradient}>
-        <View style={{width: '100%'}}>
-          {product?.product && product.status_verbose === 'product found' ? (
-            <View>
-              <Text>Barcode: <Text style={{fontWeight: 'bold'}}>{product.code}</Text></Text>
-              <View style={{display: 'flex', flexDirection: 'row', marginTop: 20}}>
-                {product.product?.image_url ? (
-                  <Image
-                  source={{
-                    uri: product.product.image_url,
-                  }}
-                  style={{width: '30%', height: 125, marginRight: 20}}/>
-                ) : (<Text></Text>)}
-        
-                <View style={{flex: 1, flexWrap: 'wrap', width: '70%'}}>
-                  <Text style={{ alignSelf: 'flex-start', marginBottom: 20, fontSize: 18}}>{product.product?.product_name}</Text>
-                  <Text style={{ textTransform: 'capitalize', textDecorationLine: 'underline', fontSize: 20}}>Nutri-score {product.product?.nutriscore_grade} </Text>
-                </View>
-              </View>
-
-              <View style={{marginTop: 20}}>
-                {product.product?.quantity ? (
-                  <Text>Quantity: {product.product.quantity}</Text>
-                ) : (<Text></Text>)}
-                {product.product?.brands ? (
-                  <Text>Brand: <Text style={{fontWeight: 'bold'}}>{product.product.brands}</Text></Text>
-                ) : (<Text></Text>)}
-              </View>
-
-              <TextInput
-              value={inputValue}
-              onChangeText={setInputValue}
-              placeholder="Search for an ingredient"
-              style={{paddingVertical: 16, paddingHorizontal: 32, borderColor: '#000', borderWidth: 1, color: '#91C5BC', backgroundColor: '#fff', borderRadius: 48, marginTop: 20}}
-              />
-            </View>
-
-
-          ) : (
-            <View>
-              <Text>Product not found</Text>
-            </View>
-          )}
-        </View>
+        <View style={styles.contentContainer}>{renderProductInfo()}</View>
       </LinearGradient>
     </View>
-  )
-}
+  );
+};
 
-export default ProductDetailsScreen
+export default ProductDetailsScreen;
 
 const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
-    display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
@@ -90,7 +102,60 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     borderRadius: 5,
     alignItems: 'center',
-    paddingHorizontal: 32,
+    paddingHorizontal: 20,
     justifyContent: 'flex-start',
   },
-});
+  contentContainer: {
+    width: '100%',
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+  imageContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+  image: {
+    width: '30%',
+    height: 125,
+    marginRight: 20,
+  },
+  productDetails: {
+    flex: 1,
+    flexWrap: 'wrap',
+  },
+  input: {
+    paddingVertical: 16, 
+    paddingHorizontal: 32, 
+    borderColor: '#000', 
+    borderWidth: 1, 
+    color: '#91C5BC', 
+    backgroundColor: '#fff', 
+    borderRadius: 48, 
+    marginTop: 20
+  },
+  productName: {
+    alignSelf: 'flex-start', 
+    marginBottom: 20, 
+    fontSize: 18
+  },
+  nutriscore: {
+    textTransform: 'capitalize', 
+    textDecorationLine: 'underline', 
+    fontSize: 20
+  },
+  brand: {
+    fontWeight: 'bold'
+  },
+  quantity: {
+    fontWeight: 'bold'
+  },
+  quantityBrand: {
+    marginTop: 20, 
+    display: 'flex', 
+    flexDirection: 'row', 
+    width: '100%', 
+    justifyContent: 'space-between'
+  }
+})

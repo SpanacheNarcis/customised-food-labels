@@ -96,14 +96,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     color: '#fff',
-    fontFamily: 'JosefinSlab-Medium'
+    // fontFamily: 'JosefinSlab-Medium'
   },
   buttonGuestUser: {
     fontSize: 24,
     textAlign: 'center',
     color: '#18201F',
     textDecorationLine: 'underline',
-    fontFamily: 'JosefinSlab-Regular'
+    // fontFamily: 'JosefinSlab-Regular'
   },
   centeredView: {
     flex: 1,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textAlign: "center",
     fontSize: 24,
-    fontFamily: 'JosefinSlab-Bold'
+    // fontFamily: 'JosefinSlab-Bold'
   },
   textStyleClose: {
     color: "#18201F",
@@ -157,12 +157,12 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 15,
     textAlign: "center",
-    fontFamily: "JosefinSlab-SemiBold"
+    // fontFamily: "JosefinSlab-SemiBold"
   },
   continueAs: {
     fontSize: 18,
     color: '#18201F',
     marginBottom: 20,
-    fontFamily: 'JosefinSlab-Regular'
+    // fontFamily: 'JosefinSlab-Regular'
   }
 });

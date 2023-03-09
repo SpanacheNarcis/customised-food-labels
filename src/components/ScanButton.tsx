@@ -4,11 +4,6 @@ import { Alert, Button, Modal, StyleSheet, Text, TouchableOpacity, View } from "
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-interface typeData {
-  type: string;
-  data: object;
-}
-
 export default function ScanButton() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>()
 
@@ -17,7 +12,7 @@ export default function ScanButton() {
   const [openScanner, setOpenScanner] = useState(false);
 
   const [hasPermission, setHasPermission] = React.useState(false);
-  const [scanData, setScanData] = React.useState({});
+  const [scanData, setScanData] = React.useState();
 
   useEffect(() => {
     (async () => {
@@ -69,6 +64,10 @@ export default function ScanButton() {
                 style={StyleSheet.absoluteFillObject}
                 onBarCodeScanned={scanData ? undefined : handleBarCodeScanned} />
             </View>
+
+            {
+              scanData && <Text>{scanData}</Text>
+            }
 
           </View>
       </Modal>
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 24,
-    fontFamily: 'JosefinSlab-Bold'
+    // fontFamily: 'JosefinSlab-Bold'
   },
   textStyleClose: {
     color: "#18201F",
@@ -181,6 +180,6 @@ const styles = StyleSheet.create({
     maxWidth: '70%',
     marginLeft: 20, 
     fontSize: 20, 
-    fontFamily: 'JosefinSlab-Bold'
+    // fontFamily: 'JosefinSlab-Bold'
   }
 });

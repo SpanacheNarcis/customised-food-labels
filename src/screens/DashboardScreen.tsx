@@ -8,26 +8,28 @@ import * as SplashScreen from 'expo-splash-screen';
 const DashboardScreen = () => {
   const [inputValue, setInputValue] = React.useState("");
 
-  const [fontsLoaded] = useFonts({
-    'JosefinSlab-Regular': require('../../assets/fonts/JosefinSlab-Regular.ttf'),
-    'JosefinSlab-Medium': require('../../assets/fonts/JosefinSlab-Medium.ttf'),
-    'JosefinSlab-SemiBold': require('../../assets/fonts/JosefinSlab-SemiBold.ttf'),
-    'JosefinSlab-Bold': require('../../assets/fonts/JosefinSlab-Bold.ttf'),
-  });
+  // const [fontsLoaded] = useFonts({
+  //   'JosefinSlab-Regular': require('../../assets/fonts/JosefinSlab-Regular.ttf'),
+  //   'JosefinSlab-Medium': require('../../assets/fonts/JosefinSlab-Medium.ttf'),
+  //   'JosefinSlab-SemiBold': require('../../assets/fonts/JosefinSlab-SemiBold.ttf'),
+  //   'JosefinSlab-Bold': require('../../assets/fonts/JosefinSlab-Bold.ttf'),
+  // });
 
-  useEffect(() => {
-    const hideSplashScreen = async () => {
-      if (fontsLoaded) {
-        await SplashScreen.hideAsync();
-      }
-    };
+  // useEffect(() => {
+  //   const hideSplashScreen = async () => {
+  //     if (fontsLoaded) {
+  //       setTimeout(async () => {
+  //         await SplashScreen.hideAsync();
+  //       }, 2000); // wait for 2 seconds before hiding splash screen
+  //     }
+  //   };
+  
+  //   hideSplashScreen();
+  // }, [fontsLoaded]);
 
-    hideSplashScreen();
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
+  // if (!fontsLoaded) {
+  //   return null;
+  // }
 
   return (
     <ScrollView contentContainerStyle={{ flex: 1 }} bounces={false}>
@@ -87,13 +89,13 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 26,
     fontWeight: '600',
-    fontFamily: 'JosefinSlab-Bold',
+    // fontFamily: 'JosefinSlab-Bold',
     margin: 0,
     marginLeft: 18,
   },
   descriptionScanBtn: {
     fontSize: 20,
-    fontFamily: 'JosefinSlab-Medium',
+    // fontFamily: 'JosefinSlab-Medium',
     marginBottom: -10
   },
   imageBarcode: {
@@ -124,10 +126,10 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderWidth: 2,
     fontSize: 18,
-    fontFamily: 'JosefinSlab-Regular',
+    // fontFamily: 'JosefinSlab-Regular',
   },
   alternativeSearch: {
-    fontFamily: 'JosefinSlab-Regular',
+    // fontFamily: 'JosefinSlab-Regular',
     fontSize: 16,
     marginBottom: 12
   }
