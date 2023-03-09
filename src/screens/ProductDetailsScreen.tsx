@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import ScanButton from '../components/ScanButton';
 import NavigationPDP from '../components/NavigationPDP';
+import { ProductContext } from './ProductContext';
 
 const API_URL = 'https://world.openfoodfacts.org/api/v0/product/';
 
@@ -14,6 +14,7 @@ const ProductDetailsScreen = ({ route }) => {
   const { data } = route.params;
   const [product, setProduct] = useState(null);
   const [inputValue, setInputValue] = useState('');
+  const { setLastScannedProduct } = useContext(ProductContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,12 +22,13 @@ const ProductDetailsScreen = ({ route }) => {
         const response = await fetch(`${API_URL}${data}.json`);
         const json = await response.json();
         setProduct(json);
+        setLastScannedProduct(json); // Set the last product scanned in the context
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [data]);
+  }, [data, setLastScannedProduct]);
 
   const renderProductInfo = () => {
     if (!product || !product.product || product.status_verbose !== 'product found') {
@@ -53,9 +55,15 @@ const ProductDetailsScreen = ({ route }) => {
           ) : null}
           <View style={styles.productDetails}>
             <Text style={styles.productName}>{product.product.product_name}</Text>
+            {product.product.nutriscore_grade ? (
             <Text style={styles.nutriscore}>
-              Nutri-score {product.product.nutriscore_grade.toUpperCase()}
+              Nutri-score {product.product.nutriscore_grade}
             </Text>
+            ) : (
+            <Text>
+              Nutri-score not available
+            </Text>
+            )}
           </View>
         </View>
 

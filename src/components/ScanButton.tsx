@@ -1,8 +1,10 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
-import { Alert, Button, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { Alert, Button, Modal, StyleSheet, Text, TouchableOpacity, Image, View } from "react-native";
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ProductContext } from "../screens/ProductContext";
+import LastProduct from "./LastProducts";
 
 export default function ScanButton() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>()
@@ -13,12 +15,15 @@ export default function ScanButton() {
 
   const [hasPermission, setHasPermission] = React.useState(false);
   const [scanData, setScanData] = React.useState();
+  const { lastScannedProduct } = useContext(ProductContext);
 
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status == 'granted')
     })();
+
+    
   }, []);
 
   if (!hasPermission) {
@@ -28,11 +33,15 @@ export default function ScanButton() {
   }
 
   const handleBarCodeScanned = ({ type, data }: BarCodeScannerResult) => {
-    setScanData(data)
-    console.log('Type: ' + type + '\nData: ' + data)
-    setOpenScanner(false)
-    {navigation.navigate("ProductDetailsScreen", {data})
-    }
+    console.log('Type: ' + type + '\nData: ' + data);
+    setOpenScanner(false);
+    console.log("🚀 ~ file: ScanButton.tsx:74 ~ ScanButton ~ scanData:", scanData)
+    navigation.navigate("ProductDetailsScreen", {data: data});
+    setScanData(undefined)
+  }
+
+  function updateState(newState) {
+    setOpenScanner(newState);
   }
 
   return (
@@ -58,16 +67,20 @@ export default function ScanButton() {
             </TouchableOpacity>
             </View>
 
-            <View style={{ height: '80%' }}>
+                <View style={{ height: lastScannedProduct ? '60%' : '85%', display: 'flex', flexDirection: 'column', }}>
 
-              <BarCodeScanner
-                style={StyleSheet.absoluteFillObject}
-                onBarCodeScanned={scanData ? undefined : handleBarCodeScanned} />
-            </View>
+                  <BarCodeScanner
+                    style={StyleSheet.absoluteFillObject}
+                    onBarCodeScanned={scanData ? undefined : handleBarCodeScanned} />
+                </View>
+                {lastScannedProduct ? (
+                  <View>
+                    <Text style={{margin: 16, textAlign: "center", fontSize: 24, fontWeight: '600'}}>Last product scanned</Text>
+                    <LastProduct  updateState={updateState}/>
+                  </View>
+                ) : null}
 
-            {
-              scanData && <Text>{scanData}</Text>
-            }
+
 
           </View>
       </Modal>
@@ -179,7 +192,9 @@ const styles = StyleSheet.create({
   titleOpenedScanner: {
     maxWidth: '70%',
     marginLeft: 20, 
-    fontSize: 20, 
+    marginBottom: 20,
+    fontSize: 18, 
+    fontWeight: '600'
     // fontFamily: 'JosefinSlab-Bold'
-  }
+  },
 });
