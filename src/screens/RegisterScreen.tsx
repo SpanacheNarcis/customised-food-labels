@@ -1,8 +1,10 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity,Keyboard, TouchableWithoutFeedback, View } from 'react-native'
-import React, { useState } from 'react'
-import { auth } from '../../firebase'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity,Keyboard, TouchableWithoutFeedback, View, SafeAreaView } from 'react-native'
+import React, { useContext, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { createUserWithEmailAndPassword } from '../../firebase';
+import { ScrollView } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
+import { AuthContext } from '../context/AuthProvider';
+
 
 
 const RegisterScreen = () => {
@@ -11,14 +13,8 @@ const RegisterScreen = () => {
 
   const navigation= useNavigation()
 
-  const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-    .then(userCredentials => {
-      const user = userCredentials.user
-      console.log('Registered in with ',user.email)
-    })
-    .catch(error => alert(error.message))
-  }
+  const authContext = useContext(AuthContext);
+  const { register, loading} = authContext;
 
   const backToLogin = () => {
     navigation.navigate("LoginScreen")
@@ -32,38 +28,48 @@ const RegisterScreen = () => {
         style={styles.container}
         behavior='padding'
       >
-        <TouchableOpacity onPress={backToLogin} style={styles.backToLogin}>
-          <Text style={styles.backToLoginText}>←back to login</Text>
-        </TouchableOpacity>
-
-        <View>
-          <Text style={styles.header}>Create an account!</Text>
-        </View>
-
-        <View style={styles.inputContainer}>
-          <TextInput 
-            placeholder='Email'
-            value= {email}
-            onChangeText= {text => setEmail(text)}
-            style={styles.input}
-          />
-          <TextInput 
-            placeholder='Password'
-            value= {password}
-            onChangeText= {text => setPassword(text)}
-            style={styles.input}
-            secureTextEntry
-          />
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={handleSignUp}
-            style={[styles.button, styles.buttonOutline]}
-          >
-            <Text style={styles.buttonOutlineText}>Register</Text>
+        <ScrollView contentContainerStyle={styles.innerContainer}>
+          <TouchableOpacity onPress={backToLogin} >
+            <Text style={styles.backToLoginText}>←back to login</Text>
           </TouchableOpacity>
-        </View>
+
+          <View>
+            <Text style={styles.header}>Register</Text>
+          </View>
+          
+
+          <View style={styles.inputContainer}>
+            <TextInput 
+              placeholder='Email'
+              value= {email}
+              onChangeText= {text => setEmail(text)}
+              style={styles.input}
+            />
+            <TextInput 
+              placeholder='Password'
+              value= {password}
+              onChangeText= {text => setPassword(text)}
+              style={styles.input}
+              secureTextEntry
+            />
+          </View>
+
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={() => register(email, password)}
+              style={[styles.button, styles.buttonOutline]}
+            >
+              <Text style={styles.buttonOutlineText}>Register</Text>
+            </TouchableOpacity>
+          </View>
+          
+          {loading && (
+            <View style={{width: 200, height: 200, backgroundColor: 'red'}}>
+              <Text>We are creating an account for you</Text>
+            </View>
+          )}
+        </ScrollView>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   )
@@ -82,8 +88,20 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    width: '100%',
+    height: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  innerContainer: {
+    minWidth: '100%', 
+    minHeight: '100%',
+    height: '100%',
+    paddingTop: 50,
+    alignItems: 'center',
+    backgroundColor: '#b4d6d399',
+    flex: 1
   },
   header: {
     fontSize: 48,
@@ -105,6 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,
+    marginHorizontal: 'auto'
   },
   button: {
     backgroundColor: '#287AAE',

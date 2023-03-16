@@ -15,7 +15,7 @@ interface ProductIngredients {
 }
 
 
-const Ingredients = ({ productIngredients }:ProductIngredients) => {
+const Product = () => {
 
   return (
     <ScrollView style={styles.container}>
@@ -29,7 +29,7 @@ const Ingredients = ({ productIngredients }:ProductIngredients) => {
   )
 }
 
-export default Ingredients
+export default Product
 
 const styles = StyleSheet.create({
   container: {

@@ -1,72 +1,42 @@
-import { KeyboardAvoidingView,Keyboard, StyleSheet, Text, TextInput, TouchableOpacity,TouchableWithoutFeedback, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { KeyboardAvoidingView,Keyboard, StyleSheet, Text, TextInput, TouchableOpacity,TouchableWithoutFeedback, View, ScrollView } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
 import { auth } from '../../firebase'
 import { useNavigation } from '@react-navigation/native'
 import { signInWithEmailAndPassword } from '../../firebase';
+import { LinearGradient } from 'expo-linear-gradient';
+import { AuthContext } from '../context/AuthProvider';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const navigation= useNavigation()
-  
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        navigation.navigate("HomeScreen")
-      }
-    })
+  const { login } = useContext(AuthContext)
 
-    return unsubscribe
-  }, [])
+  const navigation= useNavigation()
 
   const goToRegistration = () => {
     navigation.navigate("RegisterScreen")
   }
 
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-    .then(userCredentials => {
-      const user = userCredentials.user;
-      console.log('Logged in with ', user.email)
-    })
-    .catch(error => alert(error.message))
-  }
-
   const backToHomepage = () => {
-    navigation.navigate("Home")
+    navigation.navigate("FirstScreen")
   }
 
   const [keyboardStatus, setKeyboardStatus] = useState(undefined);
 
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardStatus("Keyboard Shown");
-    });
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardStatus("Keyboard Hidden");
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
 
   return (
-    <TouchableWithoutFeedback onPress={() => {
-      Keyboard.dismiss();
-    }}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior='padding'
       >
+        <ScrollView contentContainerStyle={styles.innerContainer}>
         <TouchableOpacity onPress={backToHomepage} style={styles.backToHomepage}>
           <Text style={styles.backToHomepageText}>←back to homepage</Text>
         </TouchableOpacity>
 
         <View>
-          <Text style={styles.header}>Please enter your email and password to</Text>
+          <Text style={styles.header}>Login</Text>
         </View>
 
         <View style={styles.inputContainer}>
@@ -89,7 +59,7 @@ const LoginScreen = () => {
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            onPress={handleLogin}
+            onPress={() => login(auth, email, password)}
             style={styles.button}
           >
             <Text style={styles.buttonText}>Login</Text>
@@ -110,31 +80,39 @@ const LoginScreen = () => {
           </View>
 
         </View>
+        </ScrollView>
       </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
   )
 }
 
 export default LoginScreen
 
 const styles = StyleSheet.create({
-  backToHomepage: {
-    position: 'absolute',
-    top: 64,
-    left: 32,
-  },
   backToHomepageText: {
     textDecorationLine: 'underline'
   },
   container: {
     flex: 1,
+    width: '100%',
+    height: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  innerContainer: {
+    minWidth: '100%', 
+    minHeight: '100%',
+    height: '100%',
+    paddingTop: 50,
+    alignItems: 'center',
+    backgroundColor: '#b4d6d399',
+    flex: 1
   },
   header: {
     fontSize: 32,
     marginBottom: 64,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: 24
   },
   inputContainer: {
     width: '80%'
@@ -182,5 +160,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 20,
     marginBottom: -3,
-  }
+  },
+  linearGradient: {
+    width: '100%', 
+    minHeight: '100%',
+    height: '100%',
+    paddingTop: 50,
+    alignItems: 'center',
+    flex: 1
+  },
 })

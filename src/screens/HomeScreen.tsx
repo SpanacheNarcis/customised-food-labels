@@ -4,6 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DashboardScreen from './DashboardScreen';
 import LearnScreen from './LearnScreen';
+import ProfileScreen from './ProfileScreen';
 
 const HomeScreen = () => {
   const Tab = createBottomTabNavigator();
@@ -40,6 +41,7 @@ const HomeScreen = () => {
       >
         <Tab.Screen options={{headerShown: false}} name="Dashboard" component={DashboardScreen}/>
         <Tab.Screen options={{headerShown: false}} name="Learn" component={LearnScreen}/>
+        <Tab.Screen options={{headerShown: false}} name="Profile" component={ProfileScreen}/>
       </Tab.Navigator>
     </View>
   )
