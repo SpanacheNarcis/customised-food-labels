@@ -2,9 +2,9 @@ import React from 'react'
 import { StyleSheet, Text, View} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import DashboardScreen from './DashboardScreen';
-import LearnScreen from './LearnScreen';
-import ProfileScreen from './ProfileScreen';
+import HomeTab from './HomeTab';
+import DashboardTab from './DashboardTab';
+import ProfileTab from './ProfileTab';
 
 const HomeScreen = () => {
   const Tab = createBottomTabNavigator();
@@ -39,9 +39,9 @@ const HomeScreen = () => {
         ),
       })}
       >
-        <Tab.Screen options={{headerShown: false}} name="Dashboard" component={DashboardScreen}/>
-        <Tab.Screen options={{headerShown: false}} name="Learn" component={LearnScreen}/>
-        <Tab.Screen options={{headerShown: false}} name="Profile" component={ProfileScreen}/>
+        <Tab.Screen options={{headerShown: false}} name="Home" component={HomeTab}/>
+        <Tab.Screen options={{headerShown: false}} name="Dashboard" component={DashboardTab}/>
+        <Tab.Screen options={{headerShown: false}} name="Profile" component={ProfileTab}/>
       </Tab.Navigator>
     </View>
   )

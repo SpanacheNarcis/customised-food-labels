@@ -8,18 +8,17 @@ const  NavigationPDP = ({product}) => {
   const Tab = createMaterialTopTabNavigator();
 
   const productIngredients = product.ingredients;
+  const productNutriments = product.nutriments;
+  const productServingSize = product.serving_quantity;
 
-  console.log('product.ingredients in NavigationPDP:', product.ingredients);
 
 
   const IngredientsComponent = () => {
-    console.log('product.ingredients in IngredientsComponent1:', productIngredients);
-
     return <Ingredients productIngredients={productIngredients} />;
   };
 
   const NutritionFactsComponent = () => {
-    return <NutritionFacts product={product.nutriscore_data} />;
+    return <NutritionFacts productNutriments={productNutriments} productServingSize={productServingSize} />;
   };
 
   return (

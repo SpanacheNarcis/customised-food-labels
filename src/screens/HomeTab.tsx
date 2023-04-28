@@ -4,9 +4,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import ScanButton from '../components/ScanButton';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const DashboardScreen = () => {
+const HomeTab = () => {
   const [inputValue, setInputValue] = React.useState("");
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>()
 
   // const [fontsLoaded] = useFonts({
   //   'JosefinSlab-Regular': require('../../assets/fonts/JosefinSlab-Regular.ttf'),
@@ -36,7 +39,10 @@ const DashboardScreen = () => {
       <LinearGradient colors={['#B4D6D3', '#FFFFFF']} style={styles.linearGradient}>
         <View style={styles.dashboardTab}>
           <View style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
-            <Image source={require('../../assets/Vector.png')} style={{width: 50, height: 50}}/>
+            <TouchableOpacity 
+              onPress={() => {navigation.navigate('Profile', { screen: 'HomeScreen' });}}>
+              <Image source={require('../../assets/Vector.png')} style={{width: 50, height: 50}}/>
+            </TouchableOpacity>
             <Text style={styles.searchHeader}>Another day,{"\n"}Another product</Text>
 
             <TouchableOpacity style={{ marginLeft: 'auto'}}>
@@ -66,7 +72,7 @@ const DashboardScreen = () => {
   )
 }
 
-export default DashboardScreen
+export default HomeTab
 
 const styles = StyleSheet.create({
   linearGradient: {

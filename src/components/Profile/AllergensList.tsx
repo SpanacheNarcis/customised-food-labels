@@ -4,8 +4,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { auth, db } from '../../../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 
-const AllergentsList = () => {
-  const [allergents, setAllergents] = useState([]);
+const AllergensList = () => {
+  const [allergens, setAllergens] = useState([]);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -15,7 +15,7 @@ const AllergentsList = () => {
       .then((doc) => {
         if(doc.exists) {
           const userData = doc.data();
-          setAllergents(userData.allergents || []);
+          setAllergens(userData.allergens || []);
         } else {
           console.log("document not found");
         }
@@ -27,7 +27,7 @@ const AllergentsList = () => {
     const unsubscribe = onSnapshot(userDocRef, (doc) => {
       if(doc.exists) {
         const userData = doc.data();
-        setAllergents(userData.allergents || []);
+        setAllergens(userData.allergens || []);
       } else {
         console.log("document not found")
       }
@@ -36,27 +36,27 @@ const AllergentsList = () => {
     return unsubscribe;
   }, []);
 
-  const renderAllergent = (allergent, index) => {
+  const renderAllergen = (allergen, index) => {
     return (
-      <View key={index} style={styles.allergent}>
-        <Text>{allergent}</Text>
+      <View key={index} style={styles.allergen}>
+        <Text>{allergen}</Text>
       </View>
     );
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Your Allergents:</Text>
-      {allergents.length > 0 ? (
-        allergents.map((allergent, index) => renderAllergent(allergent, index))
+      <Text style={styles.heading}>Your Allergens:</Text>
+      {allergens.length > 0 ? (
+        allergens.map((allergen, index) => renderAllergen(allergen, index))
       ) : (
-        <Text>You have no allergents</Text>
+        <Text>You have no allergens</Text>
       )}
     </View>
   );
 };
 
-export default AllergentsList;
+export default AllergensList;
 
 const styles = StyleSheet.create({
   container: {
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  allergent: {
+  allergen: {
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',

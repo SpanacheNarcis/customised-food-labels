@@ -2,17 +2,17 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, Text, View, Image} from 'react-native'
 import {LinearGradient} from 'expo-linear-gradient';
 
-const LearnScreen = () => {
+const DashboardTab = () => {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#B4D6D3', '#FFFFFF']}  style={styles.linearGradient}>
-        <Text>Hello from Learn Screen</Text>
+        <Text>Hello from Dashboard Tab</Text>
       </LinearGradient>
     </View>
   )
 }
 
-export default LearnScreen
+export default DashboardTab
 
 const styles = StyleSheet.create({
   container: {

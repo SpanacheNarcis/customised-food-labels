@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, Text, View, Image, Switch, TextInput, Keyboard} from 'react-native'
 
-import { updateDoc, doc } from 'firebase/firestore';
+import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { updateProfile } from 'firebase/auth';
 import { auth } from '../../../firebase';
@@ -16,14 +16,12 @@ const UserInformation = () => {
   const handlePress = () => {
     setShowContent(!showContent);
     const user = auth.currentUser; 
-    console.log("sete", auth.currentUser?.email);
   };
 
   const handleUpdate = async () => {
     try {
       const user = auth.currentUser;
       const userDocRef = doc(db, "users", user.email);
-      console.log("sete", auth.currentUser?.email);
       await updateDoc(userDocRef, {
         age: age,
         height: height,
@@ -34,6 +32,29 @@ const UserInformation = () => {
       console.error('Error updating profile:', error);
     }
   };
+
+  useEffect(() => {
+    if(!auth.currentUser) {
+      return
+    }
+    const user = auth?.currentUser;
+    const userDocRef = doc(db, "users", user?.email);
+
+    getDoc(userDocRef)
+      .then((doc) => {
+        if(doc.exists) {
+          const userData = doc.data();
+          setAge(userData?.age || '');
+          setWeight(userData?.weight || '');
+          setHeight(userData?.height || '');
+        } else {
+          console.log("document not found");
+        }
+      })
+      .catch((error) => {
+        console.log("error getting document: ", error);
+      });
+  }, []);
 
   
   return (
@@ -51,6 +72,7 @@ const UserInformation = () => {
                   onChangeText={age => setAge(age)}
                   placeholder="23"
                   keyboardType="numeric"
+                  value={age}
                 />
             </View>
             <View>
@@ -61,6 +83,7 @@ const UserInformation = () => {
                     onChangeText={height => setHeight(height)}
                     placeholder="23"
                     keyboardType="numeric"
+                    value={height}
                   />
                   <Text style={{position: 'absolute', right: 10, top: 20, fontSize: 18, color: '#999'}}>cm</Text>
                 </View>
@@ -73,6 +96,7 @@ const UserInformation = () => {
                     onChangeText={weight => setWeight(weight)}
                     placeholder="23"
                     keyboardType="numeric"
+                    value={weight}
                   />
                   <Text style={{position: 'absolute', right: 10, top: 21, fontSize: 18, color: '#999'}}>kg</Text>
                 </View>

@@ -6,7 +6,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import ProductDetailsScreen from './src/screens/ProductDetailsScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
-import { ProductProvider } from './src/screens/ProductContext';
+import { ProductProvider } from './src/context/ProductContext';
 import { AuthProvider } from './src/context/AuthProvider';
 
 

@@ -5,8 +5,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import NavigationPDP from '../components/NavigationPDP';
-import { ProductContext } from './ProductContext';
+import NavigationPDP from '../components/Product/NavigationPDP';
+import { ProductContext } from '../context/ProductContext';
 
 const API_URL = 'https://world.openfoodfacts.org/api/v0/product/';
 
@@ -56,24 +56,24 @@ const ProductDetailsScreen = ({ route }) => {
           <View style={styles.productDetails}>
             <Text style={styles.productName}>{product.product.product_name}</Text>
             {product.product.nutriscore_grade ? (
-            <Text style={styles.nutriscore}>
-              Nutri-score {product.product.nutriscore_grade}
-            </Text>
+              <Text style={styles.nutriscore}>
+                Nutri-score {product.product.nutriscore_grade}
+              </Text>
             ) : (
-            <Text>
-              Nutri-score not available
-            </Text>
+              <Text>
+                Nutri-score not available
+              </Text>
             )}
           </View>
         </View>
 
         <View style={styles.quantityBrand}>
-            {product.product.quantity ? (
-              <Text style={styles.quantity}>Quantity: {product.product.quantity}</Text>
-            ) : null}
-            {product.product?.brand ? (
-              <Text style={styles.brand}>Brand: {product.product.brands}</Text>
-            ) : null}
+          {product.product.quantity ? (
+            <Text style={styles.quantity}>Quantity: {product.product.quantity}</Text>
+          ) : null}
+          {product.product?.brand ? (
+            <Text style={styles.brand}>Brand: {product.product.brands}</Text>
+          ) : null}
         </View>
         <TextInput
           value={inputValue}
@@ -81,7 +81,7 @@ const ProductDetailsScreen = ({ route }) => {
           placeholder="Search for an ingredient"
           style={styles.input}
         />
-        <NavigationPDP product={product.product}/>
+        <NavigationPDP product={product.product} />
       </View>
     );
   };
@@ -134,23 +134,23 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   input: {
-    paddingVertical: 16, 
-    paddingHorizontal: 32, 
-    borderColor: '#000', 
-    borderWidth: 1, 
-    color: '#91C5BC', 
-    backgroundColor: '#fff', 
-    borderRadius: 48, 
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderColor: '#000',
+    borderWidth: 1,
+    color: '#91C5BC',
+    backgroundColor: '#fff',
+    borderRadius: 48,
     marginTop: 20
   },
   productName: {
-    alignSelf: 'flex-start', 
-    marginBottom: 20, 
+    alignSelf: 'flex-start',
+    marginBottom: 20,
     fontSize: 18
   },
   nutriscore: {
-    textTransform: 'capitalize', 
-    textDecorationLine: 'underline', 
+    textTransform: 'capitalize',
+    textDecorationLine: 'underline',
     fontSize: 20
   },
   brand: {
@@ -160,10 +160,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   quantityBrand: {
-    marginTop: 20, 
-    display: 'flex', 
-    flexDirection: 'row', 
-    width: '100%', 
+    marginTop: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
     justifyContent: 'space-between'
   }
 })

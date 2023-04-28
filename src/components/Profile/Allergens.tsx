@@ -5,50 +5,50 @@ import { updateDoc, doc, arrayUnion, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { updateProfile } from 'firebase/auth';
 import { auth } from '../../../firebase';
-import AllergentsList from './AllergentsList';
+import AllergensList from './AllergensList';
 
-const Allergents = () => {
+const Allergens = () => {
   const [showContent, setShowContent] = useState(false);
-  const [newAllergent, setNewAllergent] = useState(null);
+  const [newAllergen, setNewAllergen] = useState(null);
 
   const handlePress = () => {
     setShowContent(!showContent);
   };
 
-  const addAllergent =  async () => {
+  const addAllergen =  async () => {
     try {
       const user = auth.currentUser;
       const userDocRef = doc(db, "users", user.email);
       const userDocSnap = await getDoc(userDocRef);
       const userData = userDocSnap.data() || {};
-      const updatedAllergents = [...(userData.allergents || []), newAllergent];
-      await updateDoc(userDocRef, { allergents: updatedAllergents });
-      console.log('Allergent added successfully');
+      const updatedAllergens = [...(userData.allergens || []), newAllergen];
+      await updateDoc(userDocRef, { allergens: updatedAllergens });
+      console.log('Allergen added successfully');
     } catch (error) {
-      console.error('Error adding allergent:', error);
+      console.error('Error adding allergen:', error);
     }
   };
   
   return (
     <View style={styles.informationContainer}>
       <TouchableOpacity onPress={handlePress} style={styles.informationToggle}>
-        <Text style={styles.informationToggleText}>Allergents</Text>
+        <Text style={styles.informationToggleText}>Allergens</Text>
       </TouchableOpacity>
       {showContent && 
         <View style={styles.contentToggle}>
           <View>
             <View >
-              <Text style={{fontSize: 20}}>Add Allergents <Text style={{fontSize: 14}}>(one at a time)</Text></Text>
+              <Text style={{fontSize: 20}}>Add Allergens <Text style={{fontSize: 14}}>(one at a time)</Text></Text>
                 <View style={{display: 'flex', flexDirection: 'row'}}>
                 <TextInput 
                   style={styles.input}
-                  onChangeText={newAllergent => setNewAllergent(newAllergent)}
-                  onSubmitEditing={addAllergent}
+                  onChangeText={newAllergen => setNewAllergen(newAllergen)}
+                  onSubmitEditing={addAllergen}
                   placeholder="Garlic"
                 />
                 <TouchableOpacity 
                   style={styles.addBtn}
-                  onPress={addAllergent}
+                  onPress={addAllergen}
                   >
                   <Text style={{color: '#fff', fontSize: 30}}>+</Text>
                 </TouchableOpacity>
@@ -56,13 +56,13 @@ const Allergents = () => {
             </View>
           </View>
 
-          <AllergentsList />
+          <AllergensList />
         </View>}
     </View>
   );
 }
 
-export default Allergents
+export default Allergens
 
 const styles = StyleSheet.create({
   informationContainer: {

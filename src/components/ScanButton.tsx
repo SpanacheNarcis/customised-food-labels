@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Alert, Button, Modal, StyleSheet, Text, TouchableOpacity, Image, View } from "react-native";
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ProductContext } from "../screens/ProductContext";
+import { ProductContext } from "../context/ProductContext";
 import LastProduct from "./LastProducts";
 
 export default function ScanButton() {
@@ -35,7 +35,6 @@ export default function ScanButton() {
   const handleBarCodeScanned = ({ type, data }: BarCodeScannerResult) => {
     console.log('Type: ' + type + '\nData: ' + data);
     setOpenScanner(false);
-    console.log("🚀 ~ file: ScanButton.tsx:74 ~ ScanButton ~ scanData:", scanData)
     navigation.navigate("ProductDetailsScreen", {data: data});
     setScanData(undefined)
   }

@@ -7,23 +7,20 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { AuthContext } from '../context/AuthProvider';
 import UserInformation from '../components/Profile/UserInformation';
-import Allergents from '../components/Profile/Allergents';
+import Allergens from '../components/Profile/Allergens';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const ProfileScreen = () => {
-  const [logged, setLogged] = useState(false)
+const ProfileTab = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>()
 
   const { logout } = useContext(AuthContext)
 
-  auth.onAuthStateChanged(user => {
-    if (user) {
-       setLogged(true)
-    }
-  })
-
   const handleSignOut = () => {
     logout(auth);
-    setLogged(false)
+    navigation.navigate('Home', { screen: 'HomeScreen' });
   }
+
   return (
       <LinearGradient colors={['#B4D6D3', '#FFFFFF']}  style={styles.linearGradient}>
         <ScrollView 
@@ -36,7 +33,7 @@ const ProfileScreen = () => {
             source={require('../../assets/Vector.png')}
           />
 
-          {logged && (
+          {auth.currentUser ? (
           <View style={{ width: '100%', paddingHorizontal: 20}}>
             <View>
               <Text style={{textAlign: 'center'}}>Hi {auth.currentUser?.email}</Text>
@@ -44,7 +41,7 @@ const ProfileScreen = () => {
 
             <UserInformation />
 
-            <Allergents />
+            <Allergens />
             
             <TouchableOpacity
               onPress={handleSignOut}
@@ -53,13 +50,17 @@ const ProfileScreen = () => {
               <Text style={{fontSize: 18, color: '#fff' }}>Log out</Text>
             </TouchableOpacity>        
           </View>
+          ): (
+            <View>
+              <Text>Please log in to see profile section</Text>
+            </View>
           )}
         </ScrollView>
       </LinearGradient>
   )
 }
 
-export default ProfileScreen
+export default ProfileTab
 
 const styles = StyleSheet.create({
   container: {

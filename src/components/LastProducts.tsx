@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Alert, Button, Modal, StyleSheet, Text, TouchableOpacity, Image, View } from "react-native";
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ProductContext } from "../screens/ProductContext";
+import { ProductContext } from "../context/ProductContext";
 
 export default function LastProduct({updateState}) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>()
