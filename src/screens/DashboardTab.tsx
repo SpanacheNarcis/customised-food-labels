@@ -6,7 +6,7 @@ const DashboardTab = () => {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#B4D6D3', '#FFFFFF']}  style={styles.linearGradient}>
-        <Text>Hello from Dashboard Tab</Text>
+        <Text>Here you can track your daily calories intake!</Text>
       </LinearGradient>
     </View>
   )

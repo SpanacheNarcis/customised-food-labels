@@ -22,6 +22,9 @@ const Ingredients = ({ productIngredients }:ProductIngredients) => {
 
   useEffect(() => {
     const user = auth.currentUser;
+    if(!user) {
+      return
+    }
     const userDocRef = doc(db, "users", user.email);
 
     getDoc(userDocRef)

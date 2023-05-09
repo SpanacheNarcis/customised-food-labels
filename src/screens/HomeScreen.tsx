@@ -18,8 +18,10 @@ const HomeScreen = () => {
 
           if(route.name === "Dashboard") {
             iconName = focused ? "view-dashboard" : "view-dashboard-outline";
-          } else if (route.name === "Learn") {
-            iconName = focused ? "book-open-blank-variant" : "book";
+          } else if (route.name === "Home") {
+            iconName = focused ? "home-variant-outline" : "home-variant";
+          } else if (route.name === "Profile") {
+            iconName = focused ? "account-settings-outline" : "account-settings";
           }
           return <MaterialCommunityIcons name={iconName ? iconName : ""} size={24} color={color} />
         }, 

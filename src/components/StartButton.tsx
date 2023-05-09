@@ -1,13 +1,17 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { AuthContext } from "../context/AuthProvider";
+import { auth } from '../../firebase';
 
 
 export default function StartButton() {
   const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>()
+  
+  const { logout } = useContext(AuthContext)
 
   const goToLogin = () => {
     navigation.navigate('LoginScreen');
@@ -15,6 +19,7 @@ export default function StartButton() {
   }
 
   const goToHomeScreen = () => {
+    logout(auth)
     navigation.navigate('HomeScreen');
     setModalVisible(!modalVisible);
   }

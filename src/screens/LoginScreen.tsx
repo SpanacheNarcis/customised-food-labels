@@ -18,8 +18,12 @@ const LoginScreen = () => {
     navigation.navigate("RegisterScreen")
   }
 
-  const backToHomepage = () => {
+  const backToFirstScreen= () => {
     navigation.navigate("FirstScreen")
+  }
+
+  const backToHomeScreen= () => {
+    navigation.navigate("HomeScreen")
   }
 
   const [keyboardStatus, setKeyboardStatus] = useState(undefined);
@@ -31,9 +35,16 @@ const LoginScreen = () => {
         behavior='padding'
       >
         <ScrollView contentContainerStyle={styles.innerContainer}>
-        <TouchableOpacity onPress={backToHomepage} style={styles.backToHomepage}>
-          <Text style={styles.backToHomepageText}>←back to homepage</Text>
-        </TouchableOpacity>
+          <View style={{display: 'flex', flexDirection: 'row', paddingHorizontal: 12, justifyContent: 'space-between'}}>
+              <TouchableOpacity onPress={backToFirstScreen} style={{marginRight: 20}}>
+                <Text style={styles.backToHomepageText}>← Go to First Screen</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={backToHomeScreen} style={{marginLeft: 20}}>
+                <Text style={styles.backToHomepageText}>Go to Home Screen →</Text>
+              </TouchableOpacity>
+
+          </View>
 
         <View>
           <Text style={styles.header}>Login</Text>

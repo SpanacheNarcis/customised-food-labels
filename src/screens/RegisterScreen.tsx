@@ -30,7 +30,7 @@ const RegisterScreen = () => {
       >
         <ScrollView contentContainerStyle={styles.innerContainer}>
           <TouchableOpacity onPress={backToLogin} >
-            <Text style={styles.backToLoginText}>←back to login</Text>
+            <Text style={styles.backToLoginText}>← Go back to login</Text>
           </TouchableOpacity>
 
           <View>
@@ -65,8 +65,9 @@ const RegisterScreen = () => {
           </View>
           
           {loading && (
-            <View style={{width: 200, height: 200, backgroundColor: 'red'}}>
-              <Text>We are creating an account for you</Text>
+            <View style={{width: 300, height: 400, backgroundColor: '#000',opacity: 0.8, position: 'absolute', top: '25%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={{opacity: 1, color: '#fff'}}>We are creating an account for you.</Text>
+              <Text style={{opacity: 1, color: '#fff'}}>Please Wait!</Text>
             </View>
           )}
         </ScrollView>

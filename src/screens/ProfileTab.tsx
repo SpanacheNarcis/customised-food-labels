@@ -21,6 +21,10 @@ const ProfileTab = () => {
     navigation.navigate('Home', { screen: 'HomeScreen' });
   }
 
+  const goToLogin = () => {
+    navigation.navigate('LoginScreen', { screen: 'LoginScreen' });
+  }
+
   return (
       <LinearGradient colors={['#B4D6D3', '#FFFFFF']}  style={styles.linearGradient}>
         <ScrollView 
@@ -35,7 +39,7 @@ const ProfileTab = () => {
 
           {auth.currentUser ? (
           <View style={{ width: '100%', paddingHorizontal: 20}}>
-            <View>
+            <View style={{marginTop: 20}}>
               <Text style={{textAlign: 'center'}}>Hi {auth.currentUser?.email}</Text>
             </View>
 
@@ -51,8 +55,14 @@ const ProfileTab = () => {
             </TouchableOpacity>        
           </View>
           ): (
-            <View>
+            <View style={{marginTop: 20}}>
               <Text>Please log in to see profile section</Text>
+              <TouchableOpacity
+                onPress={goToLogin}
+                style={{backgroundColor: '#99AAAB', borderRadius: 12, marginTop: 20, padding: 10}}
+                >
+              <Text style={{fontSize: 18, color: '#fff', textAlign: 'center'}}>Log in</Text>
+            </TouchableOpacity>       
             </View>
           )}
         </ScrollView>

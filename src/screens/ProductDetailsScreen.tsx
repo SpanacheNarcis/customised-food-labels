@@ -7,6 +7,8 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import NavigationPDP from '../components/Product/NavigationPDP';
 import { ProductContext } from '../context/ProductContext';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const API_URL = 'https://world.openfoodfacts.org/api/v0/product/';
 
@@ -15,6 +17,11 @@ const ProductDetailsScreen = ({ route }) => {
   const [product, setProduct] = useState(null);
   const [inputValue, setInputValue] = useState('');
   const { setLastScannedProduct } = useContext(ProductContext);
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>()
+
+  const goBackHome = () => {
+    navigation.navigate('HomeScreen');
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,9 +48,17 @@ const ProductDetailsScreen = ({ route }) => {
 
     return (
       <View>
-        <Text>
-          Barcode: <Text style={styles.bold}>{product.code}</Text>
-        </Text>
+        <View style={{display: 'flex', flexDirection: 'row', paddingHorizontal: 12, justifyContent: 'space-between', alignItems: 'center'}}>
+          <Text>
+            Barcode: <Text style={styles.bold}>{product.code}</Text>
+          </Text>
+          <TouchableOpacity
+            style={{ backgroundColor: '#000'}}
+            onPress={goBackHome}
+          >
+            <Text style={{color: '#fff', paddingHorizontal: 8, paddingVertical: 4}}>← Go home</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.imageContainer}>
           {product.product.image_url ? (
             <Image
