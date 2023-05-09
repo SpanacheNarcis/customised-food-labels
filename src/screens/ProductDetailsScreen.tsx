@@ -41,7 +41,15 @@ const ProductDetailsScreen = ({ route }) => {
     if (!product || !product.product || product.status_verbose !== 'product found') {
       return (
         <View>
-          <Text>Product not found</Text>
+          <View style={{display: 'flex', flexDirection: 'row', paddingHorizontal: 12, justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text>Product not found</Text>
+            <TouchableOpacity
+              style={{ backgroundColor: '#000'}}
+              onPress={goBackHome}
+            >
+              <Text style={{color: '#fff', paddingHorizontal: 8, paddingVertical: 4}}>← Go home</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     }
