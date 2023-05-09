@@ -1,22 +1,23 @@
-import { getDoc } from 'firebase/firestore';
+import { getDoc, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { auth, db } from '../../../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const AllergensList = () => {
   const [allergens, setAllergens] = useState([]);
 
   useEffect(() => {
     const user = auth.currentUser;
-    if(!user) {
+    if (!user) {
       return
     }
     const userDocRef = doc(db, "users", user.email);
 
     getDoc(userDocRef)
       .then((doc) => {
-        if(doc.exists) {
+        if (doc.exists) {
           const userData = doc.data();
           setAllergens(userData.allergens || []);
         } else {
@@ -28,7 +29,7 @@ const AllergensList = () => {
       });
 
     const unsubscribe = onSnapshot(userDocRef, (doc) => {
-      if(doc.exists) {
+      if (doc.exists) {
         const userData = doc.data();
         setAllergens(userData.allergens || []);
       } else {
@@ -39,10 +40,34 @@ const AllergensList = () => {
     return unsubscribe;
   }, []);
 
+  const deleteAllergen = async (allergenToDelete) => {
+    const user = auth.currentUser;
+    if (!user) {
+      return;
+    }
+  
+    const userDocRef = doc(db, "users", user.email);
+    const userDoc = await getDoc(userDocRef);
+  
+    if (userDoc.exists) {
+      const userData = userDoc.data();
+      const updatedAllergens = userData.allergens.filter((item) => item !== allergenToDelete);
+  
+      await setDoc(userDocRef, { allergens: updatedAllergens }, { merge: true });
+    }
+  };
+
   const renderAllergen = (allergen, index) => {
+    const handleDelete = () => {
+      deleteAllergen(allergen);
+    };
+  
     return (
       <View key={index} style={styles.allergen}>
         <Text>{allergen}</Text>
+        <TouchableOpacity onPress={handleDelete} style={{ marginRight: 20 }}>
+          <MaterialCommunityIcons name="trash-can" size={24} color='#000' />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -74,5 +99,9 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between'
   },
 });
