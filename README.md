@@ -1,4 +1,5 @@
-# A mobile application that encourages people to make healthier food choices, so that they can quickly and easily determine whether a product is healthy before purchasing it.
+# About
+### A mobile application that encourages people to make healthier food choices, so that they can quickly and easily determine whether a product is healthy before purchasing it.
 
 <img width="354" alt="image" src="https://github.com/SpanacheNarcis/customised-food-labels/assets/43211787/a59aface-8a73-4145-b828-eeed769fc67c">
 <img width="205" alt="image" src="https://github.com/SpanacheNarcis/customised-food-labels/assets/43211787/a72b3df0-cd45-4bef-aa34-b0205a71d1ab">
